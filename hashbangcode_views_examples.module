@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * The hashbangcode_views_examples module file.
+ */
+
+use \Drupal\node\Entity\Node;
+
+/**
+ * Install a list of tags.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function hashbangcode_views_examples_install_tags() {
+  $tags = [
+    'Mercury',
+    'Venus',
+    'Earth',
+    'Mars',
+    'Jupiter',
+    'Saturn',
+    'Uranus',
+    'Neptune',
+  ];
+
+  $taxonomyTermStorage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  foreach ($tags as $tag) {
+    $taxonomyTermSearch = $taxonomyTermStorage->loadByProperties(['name' => $tag]);
+    if (count($taxonomyTermSearch) > 0) {
+      // Tag already exists, skip.
+      continue;
+    }
+    $termObject = $taxonomyTermStorage->create([
+      'vid' => 'tags',
+      'name' => $tag,
+    ]);
+    $termObject->enforceIsNew();
+    $termObject->save();
+  }
+}
+
+/**
+ * Install some example articles.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function hashbangcode_views_examples_install_articles() {
+  $node = Node::create([
+    'type' => 'article',
+    'title' => 'Hash Bang Code Example Content 1',
+    'body' => [
+      'value' => 'Article text.',
+      'format' => filter_default_format()
+    ],
+    'uid' => 1,
+  ]);
+  $node->save();
+
+  $node = Node::create([
+    'type' => 'article',
+    'title' => 'Hash Bang Code Example Content 2',
+    'body' => [
+      'value' => 'Article text 2.',
+      'format' => filter_default_format()
+    ],
+    'uid' => 1,
+  ]);
+  $node->save();
+}

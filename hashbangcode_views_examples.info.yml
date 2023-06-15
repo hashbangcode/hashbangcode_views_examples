@@ -1,0 +1,8 @@
+name: hashbangcode_views_examples
+type: module
+description: 'Examples of the views module.'
+core_version_requirement: '^9.4 || ^10'
+dependencies:
+  - 'drupal:taxonomy'
+  - 'drupal:user'
+  - 'drupal:views'

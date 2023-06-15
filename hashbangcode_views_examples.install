@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * @file
+ * The hashbangcode_views_examples install file.
+ */
+
+function hashbangcode_views_examples_install($is_syncing) {
+  hashbangcode_views_examples_install_tags();
+  hashbangcode_views_examples_install_articles();
+}
