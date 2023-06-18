@@ -437,12 +437,12 @@ display:
         style: false
         row: false
       display_extenders: {  }
-      path: example_tags_contextual_filter
+      path: example-tags-contextual-filter
       menu:
         type: normal
         title: 'Contextual Filter'
         description: ''
-        weight: 0
+        weight: 6
         expanded: false
         menu_name: main
         parent: ''

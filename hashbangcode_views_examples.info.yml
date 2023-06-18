@@ -3,6 +3,8 @@ type: module
 description: 'Examples of the views module.'
 core_version_requirement: '^9.4 || ^10'
 dependencies:
+  - 'drupal:node'
   - 'drupal:taxonomy'
+  - 'drupal:text'
   - 'drupal:user'
   - 'drupal:views'

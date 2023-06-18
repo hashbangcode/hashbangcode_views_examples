@@ -5,7 +5,7 @@
  * The hashbangcode_views_examples module file.
  */
 
-use \Drupal\node\Entity\Node;
+use Drupal\Core\Database\Query\AlterableInterface;
 
 /**
  * Install a list of tags.
@@ -14,7 +14,7 @@ use \Drupal\node\Entity\Node;
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function hashbangcode_views_examples_install_tags() {
+function _hashbangcode_views_examples_install_tags() {
   $tags = [
     'Mercury',
     'Venus',
@@ -47,26 +47,95 @@ function hashbangcode_views_examples_install_tags() {
  *
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function hashbangcode_views_examples_install_articles() {
-  $node = Node::create([
+function _hashbangcode_views_examples_install_articles() {
+  $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
+  $node = $nodeStorage->create([
     'type' => 'article',
     'title' => 'Hash Bang Code Example Content 1',
     'body' => [
-      'value' => 'Article text.',
-      'format' => filter_default_format()
+      'value' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac aliquet erat. Suspendisse sodales tortor in ligula euismod maximus. Pellentesque in est consequat, eleifend felis tempor, scelerisque tortor. In non semper est. Nulla consequat elit vitae risus malesuada cursus. Fusce scelerisque facilisis ex, vitae convallis mi. Sed vitae lectus commodo arcu faucibus feugiat.</p>',
+      'format' => filter_default_format(),
     ],
+    'field_tags' => [1],
     'uid' => 1,
+    'created' => strtotime('-3 weeks'),
   ]);
   $node->save();
 
-  $node = Node::create([
+  $node = $nodeStorage->create([
     'type' => 'article',
     'title' => 'Hash Bang Code Example Content 2',
     'body' => [
-      'value' => 'Article text 2.',
-      'format' => filter_default_format()
+      'value' => '<p>Etiam fermentum ac ex viverra dictum. Etiam eget ultrices nulla, at porttitor ante. Vivamus sodales tellus sit amet ipsum imperdiet tristique. Fusce ut velit a ligula venenatis pharetra eget sit amet urna. Donec quam mauris, posuere in nisl non, consectetur vehicula elit. Donec ut porttitor sem, id pharetra ex.</p>',
+      'format' => filter_default_format(),
     ],
-    'uid' => 1,
+    'field_tags' => [1, 2, 3, 4, 5, 6],
+    'uid' => 2,
+    'created' => strtotime('-2 week'),
   ]);
   $node->save();
+
+  $node = $nodeStorage->create([
+    'type' => 'article',
+    'title' => 'Hash Bang Code Example Content 3',
+    'body' => [
+      'value' => '<p>Ut cursus tempor consectetur. Sed hendrerit leo id egestas euismod. Nullam pharetra dui eget lacus luctus pharetra. Vestibulum volutpat tristique mollis. Mauris scelerisque purus a massa eleifend interdum. Maecenas sed eleifend felis. Fusce luctus tellus libero, id consectetur lectus dictum eu.</p>',
+      'format' => filter_default_format(),
+    ],
+    'field_tags' => [5],
+    'uid' => 2,
+    'created' => strtotime('-1 week'),
+  ]);
+  $node->save();
+
+  $node = $nodeStorage->create([
+    'type' => 'article',
+    'title' => 'Hash Bang Code Example Content 4',
+    'body' => [
+      'value' => '<p>Quisque tellus magna, gravida vel neque eget, sodales facilisis odio. Integer eu accumsan orci. In eleifend ut odio et tempor. Aenean in justo in ex ultricies condimentum a nec purus. In hac habitasse platea dictumst. Praesent nec tincidunt dolor.</p>',
+      'format' => filter_default_format(),
+    ],
+    'field_tags' => [2],
+    'uid' => 1,
+    'created' => strtotime('today'),
+  ]);
+  $node->save();
+}
+
+/**
+ * Install some example users.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function _hashbangcode_views_examples_install_users() {
+  $userStorage = \Drupal::entityTypeManager()->getStorage('user');
+  $user = $userStorage->create([
+    'name' => 'content_editor',
+    'pass' => 'content_editor',
+    'mail' => 'content_editor@example.com',
+    'status' => 1,
+    'roles' => 'content_editor',
+  ]);
+  $user->save();
+}
+
+/**
+ * Sets up the views interface to show the advanced column and SQL preview.
+ */
+function _hashbangcode_views_examples_setup_views() {
+  $config = \Drupal::service('config.factory')->getEditable('views.settings');
+  $config->set('ui.show.advanced_column', TRUE);
+  $config->set('ui.show.sql_query.enabled', TRUE);
+  $config->set('ui.show.sql_query.where', 'above');
+  $config->save();
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function hashbangcode_views_examples_query_hashbangcode_query_tag_alter(Drupal\Core\Database\Query\AlterableInterface $query) {
+  // Add a condition to this tag that will hide node 1.
+  $query->condition('nid', 1, '<>');
 }

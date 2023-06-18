@@ -2,18 +2,19 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
+    - node.type.article
     - system.menu.main
-    - taxonomy.vocabulary.tags
   module:
-    - taxonomy
+    - node
     - user
-id: hashbangcode_example_filter
-label: 'Example Filter'
+id: hashbangcode_example_relationship
+label: 'Example Relationship'
 module: views
 description: ''
 tag: ''
-base_table: taxonomy_term_field_data
-base_field: tid
+base_table: node_field_data
+base_field: nid
 display:
   default:
     id: default
@@ -21,18 +22,18 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Tag List'
+      title: 'Example Relationship'
       fields:
-        name:
-          id: name
-          table: taxonomy_term_field_data
-          field: name
+        title:
+          id: title
+          table: node_field_data
+          field: title
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
-          entity_field: name
-          plugin_id: term_name
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -70,7 +71,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          convert_spaces: false
       pager:
         type: mini
         options:
@@ -107,52 +107,68 @@ display:
         type: tag
         options: {  }
       empty: {  }
-      sorts: {  }
+      sorts:
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
       arguments: {  }
       filters:
         status:
           id: status
-          table: taxonomy_term_field_data
+          table: node_field_data
           field: status
-          entity_type: taxonomy_term
+          entity_type: node
           entity_field: status
           plugin_id: boolean
           value: '1'
           group: 1
           expose:
             operator: ''
-        vid:
-          id: vid
-          table: taxonomy_term_field_data
-          field: vid
-          entity_type: taxonomy_term
-          entity_field: vid
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          entity_type: node
+          entity_field: type
           plugin_id: bundle
           value:
-            tags: tags
-        tid:
-          id: tid
-          table: taxonomy_term_field_data
-          field: tid
-          relationship: none
+            article: article
+        roles_target_id:
+          id: roles_target_id
+          table: user__roles
+          field: roles_target_id
+          relationship: uid
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
-          entity_field: tid
-          plugin_id: taxonomy_index_tid
+          entity_type: user
+          entity_field: roles
+          plugin_id: user_roles
           operator: or
           value: {  }
           group: 1
           exposed: true
           expose:
-            operator_id: tid_op
-            label: Term
+            operator_id: roles_target_id_op
+            label: Roles
             description: ''
             use_operator: false
-            operator: tid_op
+            operator: roles_target_id_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: tid
+            identifier: roles_target_id
             required: false
             remember: false
             multiple: true
@@ -175,15 +191,12 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          vid: tags
-          type: select
-          hierarchy: false
-          limit: true
-          error_message: true
       style:
         type: default
       row:
-        type: 'entity:taxonomy_term'
+        type: 'entity:node'
+        options:
+          view_mode: teaser
       query:
         type: views_query
         options:
@@ -192,7 +205,18 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-      relationships: {  }
+      relationships:
+        uid:
+          id: uid
+          table: node_field_data
+          field: uid
+          relationship: none
+          group_type: group
+          admin_label: User
+          entity_type: node
+          entity_field: uid
+          plugin_id: standard
+          required: true
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -203,22 +227,22 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
+        - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  filter_page:
-    id: filter_page
+  relationship_page:
+    id: relationship_page
     display_title: Page
     display_plugin: page
     position: 1
     display_options:
       display_extenders: {  }
-      path: example_tags_list
+      path: example-relationship
       menu:
         type: normal
-        title: Filter
+        title: Relationship
         description: ''
-        weight: 5
+        weight: 0
         expanded: false
         menu_name: main
         parent: ''
@@ -230,6 +254,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
+        - 'user.node_grants:view'
         - user.permissions
       tags: {  }
