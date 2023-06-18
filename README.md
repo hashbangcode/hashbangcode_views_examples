@@ -6,6 +6,8 @@ This module assumes that you have installed the site using the standard install
 profile. You will see errors if you install the module on sites that do not
 contain the expected fields that are installed through this profile.
 
+This module will work on Drupal 9+.
+
 Created by Phil Norton at https://www.hashbangcode.com/.
 
 # Views Available
