@@ -356,7 +356,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/example_tags_contextual_filter/{{ tid }}'
+            path: '/example-tags-contextual-filter/{{ tid }}'
             absolute: false
             external: false
             replace_spaces: false

@@ -7,6 +7,14 @@ This module assumes that you have installed the site using the standard install
 profile. You will see errors if you install the module on sites that do not
 contain the expected fields that are installed through this profile.
 
+If you have a blank Drupal site, you can re-install the site and the module in
+one shot using the following command. Don't run this on a site if you want to
+keep any of the content in it.
+
+```
+ddev drush si standard --yes --account-name=admin --account-pass=admin && ddev drush en hashbangcode_views_examples
+```
+
 This module will work on Drupal 9+.
 
 Created by Phil Norton at https://www.hashbangcode.com/.
@@ -21,7 +29,7 @@ available as menu links in the "Main navigation" menu.
 A list of tags that can be filtered using a single filter in a Views exposed
 form.
 
-- Path /example-tags-list
+- Path /example-tags-filter
 
 ## Contextual filter
 

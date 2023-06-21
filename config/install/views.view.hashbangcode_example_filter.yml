@@ -213,7 +213,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: example_tags_list
+      path: example-tags-filter
       menu:
         type: normal
         title: Filter
